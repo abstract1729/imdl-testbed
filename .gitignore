@@ -99,15 +99,6 @@ runs/
 events.out.tfevents*
 
 #################################################
-# Experiment outputs
-#################################################
-
-experiments/**/outputs/
-experiments/**/processed/
-experiments/**/metrics/*.csv
-experiments/**/metrics/*.json
-
-#################################################
 # Generated figures
 #################################################
 
@@ -150,6 +141,10 @@ conda-meta/
 *.rar
 *.7z
 
+##################################################################################################
+# MODELS
+##################################################################################################
+
 #################################################
 # TruFor
 #################################################
@@ -159,3 +154,24 @@ models/trufor/test_docker/
 models/trufor/TruFor_train_test/dataset/data/
 models/trufor/TruFor_train_test/outputs/
 models/trufor/TruFor_train_test/pretrained_models/
+
+
+##################################################################################################
+# EXPERIMENTS
+##################################################################################################
+
+#################################################
+# Experiment outputs
+#################################################
+
+experiments/**/outputs/*
+experiments/**/processed/*
+experiments/**/metrics/*.csv
+experiments/**/metrics/*.json
+
+# Do not ignore any python code
+!experiments/**/outputs/*.ipynb
+!experiments/**/outputs/*.py
+
+!experiments/**/processed/*.ipynb
+!experiments/**/processed/*.py
