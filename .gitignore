@@ -149,3 +149,13 @@ conda-meta/
 *.zip
 *.rar
 *.7z
+
+#################################################
+# TruFor
+#################################################
+
+!models/trufor/docs/*
+models/trufor/test_docker/
+models/trufor/TruFor_train_test/dataset/data/
+models/trufor/TruFor_train_test/outputs/
+models/trufor/TruFor_train_test/pretrained_models/
