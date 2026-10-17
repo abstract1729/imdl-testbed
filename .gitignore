@@ -188,3 +188,7 @@ experiments/**/metrics/*.json
 
 !experiments/**/processed/*.ipynb
 !experiments/**/processed/*.py
+
+models/pgc-net/pretrained_model
+models/pgc-net/pretrained_dino
+
