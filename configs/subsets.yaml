@@ -1,0 +1,83 @@
+# AUTO-SPLICE DATASET
+auto-splice:
+  default:
+    real:
+      - metadata/auto-splice/subsets/real_2273.txt
+    fake:
+      - metadata/auto-splice/subsets/fake_3621.txt
+
+  small:
+    real:
+      - metadata/auto-splice/subsets/real_250.txt
+    fake:
+      - metadata/auto-splice/subsets/fake_250.txt
+
+# CSI-IMD DATASET
+csi-imd:
+  default:
+    real:
+      - metadata/csi-imd/subsets/real_200.txt
+    fake:
+      - metadata/csi-imd/subsets/fake_1000.txt
+
+  small:
+    real:
+      - metadata/csi-imd/subsets/real_200.txt
+    fake:
+      - metadata/csi-imd/subsets/fake_200.txt
+
+# DEAL-300K DATASET
+deal-300k:
+  default:
+    real:
+      - metadata/deal-300k/subsets/real_3500.txt
+    fake:
+      - metadata/deal-300k/subsets/fake_3500.txt
+
+  small:
+    real:
+      - metadata/deal-300k/subsets/real_250.txt
+    fake:
+      - metadata/deal-300k/subsets/fake_250.txt
+
+# IMG-EDIT DATASET
+img-edit:
+  default:
+    real:
+      - metadata/img-edit/subsets/real_3500.txt
+    fake:
+      - metadata/img-edit/subsets/fake_3500.txt
+
+  small:
+    real:
+      - metadata/img-edit/subsets/real_150.txt
+    fake:
+      - metadata/img-edit/subsets/fake_150.txt
+
+# SID-SET DATASET
+sid-set:
+  default:
+    real:
+      - metadata/sid-set/subsets/real_2004.txt
+    fake:
+      - metadata/sid-set/subsets/fake_1982.txt
+
+  small:
+    real:
+      - metadata/sid-set/subsets/real_250.txt
+    fake:
+      - metadata/sid-set/subsets/fake_250.txt
+
+# BR-GEN DATASET
+br-gen:
+  default:
+    real:
+      - metadata/br-gen/subsets/real_1500.txt
+    fake:
+      - metadata/br-gen/subsets/fake_3000.txt
+
+  small:
+    real:
+      - metadata/br-gen/subsets/real_250.txt
+    fake:
+      - metadata/br-gen/subsets/fake_250.txt

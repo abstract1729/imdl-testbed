@@ -48,11 +48,20 @@ ENV/
 #################################################
 
 # CSI-IMD
-datasets/**/manipulated_images/
-datasets/**/pristine_images_used_for_manipulation/
-datasets/**/pixel_based_truth_mask/
-datasets/**/semantic_relavent_pixel_truth_mask/
-datasets/**/image_info.csv
+# datasets/**/manipulated_images/
+# datasets/**/pristine_images_used_for_manipulation/
+# datasets/**/pixel_based_truth_mask/
+# datasets/**/semantic_relevant_pixel_truth_mask/
+# datasets/**/image_subset/
+# datasets/**/image_info.csv
+
+datasets/
+outputs/
+experiments-validation/
+experiments-retraining/
+paper-replications/
+test_*.py
+train_dataset_check.py
 
 # Generic image files
 *.jpg
@@ -154,6 +163,10 @@ models/trufor/test_docker/
 models/trufor/TruFor_train_test/dataset/data/
 models/trufor/TruFor_train_test/outputs/
 models/trufor/TruFor_train_test/pretrained_models/
+
+#################################################
+# Cat-Net
+#################################################
 
 
 ##################################################################################################

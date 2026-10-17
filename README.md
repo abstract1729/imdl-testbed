@@ -20,13 +20,23 @@ Each experiment contains code for inference, evaluation, metrics computation, vi
 ### Currently implemented:
 
 - **Tasks**
-    - Localization
     - Detection
+    - Localization (Later)
 
 - **Datasets**
+    - Auto-Splice
+    - BR-Gen
     - CSI-IMD
+    - DEAL-300K
+    - IMG-Edit
+    - SID-Set
 
 - **Models**
     - TruFor
+    - PGC-Net
+    - CLIP-Det
+    - B-Free
 
 The framework is intended to scale to additional datasets and models with minimal changes.
+
+                
