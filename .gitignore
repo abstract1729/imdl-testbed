@@ -192,3 +192,6 @@ experiments/**/metrics/*.json
 models/pgc-net/pretrained_model
 models/pgc-net/pretrained_dino
 
+experiments-pipeline/**/hifi-net/
+experiments-pipeline/**/pscc-net/
+experiments-pipeline/**/univfd/
