@@ -19,6 +19,9 @@ import argparse
 import numpy as np
 from tqdm import tqdm
 from glob import glob
+import csv
+from datetime import datetime
+from pathlib import Path
 
 import torch
 from torch.nn import functional as F
@@ -101,6 +104,40 @@ model = get_model(config)
 model.load_state_dict(checkpoint['state_dict'])
 model = model.to(device)
 
+
+# ============================================================
+# Diagnostic CSV Configuration (Added section)
+# ============================================================
+
+# Timestamp for this inference run
+run_timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+
+# CSV file to store model input/output statistics
+csv_path = os.path.join(output, f"official_pipeline_stats_{run_timestamp}.csv")
+# Create output directory if required
+os.makedirs(output, exist_ok=True)
+
+CSV_COLUMNS = [ "image_path", "image_name",
+
+    # ------------------------------
+    # Input Tensor
+    # ------------------------------
+    "input_shape", "input_dtype", "input_min", "input_max", "input_mean", "input_std",
+
+    # ------------------------------
+    # Model Outputs
+    # ------------------------------
+    "score","map_shape","map_min","map_max","map_mean","map_std",
+    "conf_shape","conf_min","conf_max","conf_mean","conf_std",
+    "np_shape","np_min","np_max","np_mean","np_std"]
+
+csv_file = open(csv_path,mode="w",newline="")
+csv_writer = csv.DictWriter(csv_file,fieldnames=CSV_COLUMNS)
+csv_writer.writeheader()
+print(f"\nDiagnostic CSV: {csv_path}\n")
+
+# ============================================================
+
 with torch.no_grad():
     for index, (rgb, path) in enumerate(tqdm(testloader)):
         if os.path.splitext(os.path.basename(output))[1] == '':  # output is a directory
@@ -126,6 +163,22 @@ with torch.no_grad():
         if not (os.path.isfile(filename_out)):
             try:
                 rgb = rgb.to(device)
+
+                # ============================================================
+                # Collect Input Tensor Statistics
+                # ============================================================
+
+                input_shape = tuple(rgb.shape)
+                input_dtype = str(rgb.dtype)
+
+                input_min = rgb.min().item()
+                input_max = rgb.max().item()
+
+                input_mean = rgb.mean().item()
+                input_std = rgb.std().item()
+
+                # ============================================================
+
                 model.eval()
 
                 det  = None
@@ -149,6 +202,53 @@ with torch.no_grad():
                 pred = F.softmax(pred, dim=0)[1]
                 pred = pred.cpu().numpy()
 
+
+                # ============================================================
+                # Collect Output Statistics
+                # ============================================================
+
+                map_shape = pred.shape
+                map_min = float(pred.min())
+                map_max = float(pred.max())
+                map_mean = float(pred.mean())
+                map_std = float(pred.std())
+
+
+                if conf is not None:
+
+                    conf_shape = conf.shape
+                    conf_min = float(conf.min())
+                    conf_max = float(conf.max())
+                    conf_mean = float(conf.mean())
+                    conf_std = float(conf.std())
+
+                else:
+
+                    conf_shape = ""
+                    conf_min = ""
+                    conf_max = ""
+                    conf_mean = ""
+                    conf_std = ""
+
+
+                if save_np and npp is not None:
+
+                    np_shape = npp.shape
+                    np_min = float(npp.min())
+                    np_max = float(npp.max())
+                    np_mean = float(npp.mean())
+                    np_std = float(npp.std())
+
+                else:
+
+                    np_shape = ""
+                    np_min = ""
+                    np_max = ""
+                    np_mean = ""
+                    np_std = ""
+
+                # ============================================================
+
                 out_dict = dict()
                 out_dict['map'    ] = pred
                 out_dict['imgsize'] = tuple(rgb.shape[2:])
@@ -161,9 +261,59 @@ with torch.no_grad():
 
                 from os import makedirs
                 makedirs(os.path.dirname(filename_out), exist_ok=True)
+                
+                # ============================================================
+                # Save Diagnostic Statistics
+                # ============================================================
+
+                csv_writer.writerow(
+                    {
+                        "image_path": path,
+                        "image_name": Path(path).stem,
+
+                        "input_shape": input_shape,
+                        "input_dtype": input_dtype,
+                        "input_min": input_min,
+                        "input_max": input_max,
+                        "input_mean": input_mean,
+                        "input_std": input_std,
+
+                        "score": det_sig if det is not None else "",
+
+                        "map_shape": map_shape,
+                        "map_min": map_min,
+                        "map_max": map_max,
+                        "map_mean": map_mean,
+                        "map_std": map_std,
+
+                        "conf_shape": conf_shape,
+                        "conf_min": conf_min,
+                        "conf_max": conf_max,
+                        "conf_mean": conf_mean,
+                        "conf_std": conf_std,
+
+                        "np_shape": np_shape,
+                        "np_min": np_min,
+                        "np_max": np_max,
+                        "np_mean": np_mean,
+                        "np_std": np_std,
+                    }
+                )
+
+                csv_file.flush()
+
+                # ============================================================
+
+
                 np.savez(filename_out, **out_dict)
             except:
                 import traceback
                 traceback.print_exc()
                 pass
 
+# ============================================================
+# Close Diagnostic CSV
+# ============================================================
+
+csv_file.close()
+print(f"\nDiagnostic statistics saved to:\n{csv_path}")
